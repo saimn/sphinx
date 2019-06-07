@@ -459,12 +459,21 @@ class Builder:
 
     def _read_serial(self, docnames):
         # type: (List[str]) -> None
+        times = []
+
         for docname in status_iterator(docnames, __('reading sources... '), "purple",
                                        len(docnames), self.app.verbosity):
             # remove all inventory entries for that file
             self.app.emit('env-purge-doc', self.env, docname)
             self.env.clear_doc(docname)
+            t0 = time.time()
             self.read_doc(docname)
+            times.append((time.time() - t0, docname))
+
+        times.sort(reverse=True)
+        logger.info(bold(__('20 slowest files:')))
+        for t, name in times[:20]:
+            logger.info(__('%s : %.2f sec.'), name, t)
 
     def _read_parallel(self, docnames, nproc):
         # type: (List[str], int) -> None
