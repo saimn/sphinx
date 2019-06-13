@@ -191,6 +191,8 @@ files can be built by specifying individual filenames.
                        help=__('show full traceback on exception'))
     group.add_argument('-P', action='store_true', dest='pdb',
                        help=__('run Pdb on exception'))
+    group.add_argument('--read-duration', type=int, dest='read_duration',
+                       help=__('report N files with the slowest read time'))
 
     return parser
 
@@ -280,7 +282,8 @@ def build_main(argv=sys.argv[1:]):
             app = Sphinx(args.sourcedir, args.confdir, args.outputdir,
                          args.doctreedir, args.builder, confoverrides, status,
                          warning, args.freshenv, args.warningiserror,
-                         args.tags, args.verbosity, args.jobs, args.keep_going)
+                         args.tags, args.verbosity, args.jobs, args.keep_going,
+                         args.read_duration)
             app.build(args.force_all, filenames)
             return app.statuscode
     except (Exception, KeyboardInterrupt) as exc:

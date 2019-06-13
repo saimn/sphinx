@@ -130,7 +130,7 @@ class Sphinx:
     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
-                 parallel=0, keep_going=False):
+                 parallel=0, keep_going=False, report_read_duration=0):
         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
         self.phase = BuildPhase.INITIALIZATION
         self.verbosity = verbosity
@@ -180,6 +180,8 @@ class Sphinx:
         else:
             self.warningiserror = warningiserror
         logging.setup(self, self._status, self._warning)
+
+        self.report_read_duration = report_read_duration
 
         self.events = EventManager()
 
